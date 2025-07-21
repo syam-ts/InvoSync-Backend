@@ -4,17 +4,25 @@ import { ConfirmInvoicePayment } from "../../user-cases/invoice/ConfirmInvoicePa
 import { CreateInvoice } from "../../user-cases/invoice/CreateInvoiceUseCase";
 import { GetInvoice } from "../../user-cases/invoice/GetInvoiceUseCase";
 
-const invoiceRepository = new InvoiceRepositoryDb();
-const createInvoiceUsecase = new CreateInvoice(invoiceRepository);
-const confirmInvoicePaymentUseCaseUsecase = new ConfirmInvoicePayment(
-    invoiceRepository
-);
-const getInvoiceUseCase = new GetInvoice(invoiceRepository);
-
 export class InvoiceController {
+
+    private invoiceRepository: InvoiceRepositoryDb;
+    private createInvoiceUsecase: CreateInvoice;
+    private getInvoiceUseCase: GetInvoice;
+    private confirmInvoicePaymentUseCaseUsecase: ConfirmInvoicePayment;
+
+    constructor() {
+        this.invoiceRepository = new InvoiceRepositoryDb();
+        this.createInvoiceUsecase = new CreateInvoice(this.invoiceRepository);
+        this.confirmInvoicePaymentUseCaseUsecase = new ConfirmInvoicePayment(
+            this.invoiceRepository
+        );
+        this.getInvoiceUseCase = new GetInvoice(this.invoiceRepository);
+    }
+
     async createInvoice(req: any, res: any): Promise<void> {
         try {
-            const result = await createInvoiceUsecase.execute(req.body);
+            const result = await this.createInvoiceUsecase.execute(req.body);
 
             res
                 .status(HttpStatusCode.CREATED)
@@ -29,7 +37,7 @@ export class InvoiceController {
 
     async confirmInvoicePayment(req: any, res: any): Promise<void> {
         try {
-            const result = await confirmInvoicePaymentUseCaseUsecase.execute(
+            const result = await this.confirmInvoicePaymentUseCaseUsecase.execute(
                 req.params.invoiceId
             );
 
@@ -48,7 +56,7 @@ export class InvoiceController {
         try {
             const { invoiceId } = req.params;
             const { filter, currentPage } = req.query;
-            const invoice = await getInvoiceUseCase.execute(invoiceId);
+            const invoice = await this.getInvoiceUseCase.execute(invoiceId);
 
             res
                 .status(HttpStatusCode.OK)
