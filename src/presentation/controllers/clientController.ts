@@ -1,11 +1,11 @@
-import { HttpStatusCode } from "@/helper/constants/statusCodes";
+import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { ClientRepositoryDb } from "../../infrastructure/repositories/clientRepositoryDb";
 import { CreateClient } from "../../user-cases/client/CreateClientUsecase";
 import { GetAllInvoices } from "../../user-cases/client/GetAllInvoicesUseCase";
 import { UpdateClient } from "../../user-cases/client/UpdateClientUseCase";
 
 export class ClientController {
-    
+
     private clientRepository: ClientRepositoryDb;
     private createClientUseCase: CreateClient;
     private updateClientUseCase: UpdateClient;

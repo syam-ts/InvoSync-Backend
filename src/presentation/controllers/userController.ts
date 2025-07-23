@@ -7,30 +7,33 @@ import { GetUserProfile } from "../../user-cases/user/GetUserProfileUseCase";
 import { GetMyClients } from "../../user-cases/user/GetMyClientsUseCase";
 import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
 import generateToken from "../../utils/jwt/generateToken";
-import { HttpStatusCode } from "@/helper/constants/statusCodes";
+import { HttpStatusCode } from "../../helper/constants/statusCodes";
+
+
+
+         const userRepository = new  UserRepositoryDb();
+        const signupUserUsecase = new CreateUser(userRepository);
+        const loginUserUsecase = new LoginUser(userRepository);
+        const getUserProfileUsecase = new GetUserProfile(userRepository);
+        const updateUserUsecase = new UpdateUser(userRepository);
+        const getMyClientUsecase = new GetMyClients(userRepository);
+        const getSingleClientUsecase = new GetSingleClient(userRepository);
+    
 
 export class UserController {
-    private userRepository: UserRepositoryDb;
-    private signupUserUsecase: CreateUser;
-    private loginUserUsecase: LoginUser;
-    private getUserProfileUsecase: GetUserProfile;
-    private updateUserUsecase: UpdateUser;
-    private getMyClientUsecase: GetMyClients;
-    private getSingleClientUsecase: GetSingleClient;
+    // private userRepository: UserRepositoryDb;
+    // private signupUserUsecase: CreateUser;
+    // private loginUserUsecase: LoginUser;
+    // private getUserProfileUsecase: GetUserProfile;
+    // private updateUserUsecase: UpdateUser;
+    // private getMyClientUsecase: GetMyClients;
+    // private getSingleClientUsecase: GetSingleClient;
 
-    constructor() {
-        this.userRepository = new UserRepositoryDb();
-        this.signupUserUsecase = new CreateUser(this.userRepository);
-        this.loginUserUsecase = new LoginUser(this.userRepository);
-        this.getUserProfileUsecase = new GetUserProfile(this.userRepository);
-        this.updateUserUsecase = new UpdateUser(this.userRepository);
-        this.getMyClientUsecase = new GetMyClients(this.userRepository);
-        this.getSingleClientUsecase = new GetSingleClient(this.userRepository);
-    }
+   
 
     async signupUser(req: Request, res: Response): Promise<void> {
         try {
-            const result = await this.signupUserUsecase.execute(req.body);
+            const result = await signupUserUsecase.execute(req.body);
 
             res
                 .status(HttpStatusCode.CREATED)
@@ -45,7 +48,7 @@ export class UserController {
 
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
-            const user = await this.loginUserUsecase.execute(req.body);
+            const user = await loginUserUsecase.execute    (req.body);
             const { accessToken, refreshToken } = generateToken(user._id);
 
             res.cookie("refreshToken", refreshToken, {
@@ -71,7 +74,7 @@ export class UserController {
     async getUserProfile(req: any, res: Response): Promise<void> {
         try {
             const { userId } = req.user;
-            const user = await this.getUserProfileUsecase.execute(userId);
+            const user = await getUserProfileUsecase.execute(userId);
 
             res
                 .status(HttpStatusCode.OK)
@@ -86,7 +89,7 @@ export class UserController {
 
     async updateUser(req: any, res: Response): Promise<void> {
         try {
-            const user = await this.updateUserUsecase.execute(
+            const user = await updateUserUsecase.execute(
                 req.body,
                 req.user.userId
             );
@@ -105,7 +108,7 @@ export class UserController {
     async getMyClients(req: any, res: Response): Promise<void> {
         try {
             const { userId } = req.user;
-            const clients = await this.getMyClientUsecase.execute(userId);
+            const clients = await getMyClientUsecase.execute(userId);
 
             res
                 .status(HttpStatusCode.OK)
@@ -121,7 +124,7 @@ export class UserController {
     async getSingleClient(req: any, res: Response): Promise<void> {
         try {
             const { clientId } = req.params;
-            const client = await this.getSingleClientUsecase.execute(clientId);
+            const client = await getSingleClientUsecase.execute(clientId);
 
             res
                 .status(HttpStatusCode.OK)

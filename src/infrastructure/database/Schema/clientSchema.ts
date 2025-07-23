@@ -1,5 +1,6 @@
-import { IClient } from "@/domain/entities/Client";
+ 
 import { model, Schema, Types } from "mongoose";
+import { IClient } from "/domain/entities/Client";
 
 const clientSchema = new Schema<IClient>({ 
     userId: {

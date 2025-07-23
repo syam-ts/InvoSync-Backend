@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "@/helper/constants/statusCodes";
+import { HttpStatusCode } from "../../helper/constants/statusCodes";
 import { InvoiceRepositoryDb } from "../../infrastructure/repositories/invoiceRepositoryDb";
 import { ConfirmInvoicePayment } from "../../user-cases/invoice/ConfirmInvoicePaymentUseCase";
 import { CreateInvoice } from "../../user-cases/invoice/CreateInvoiceUseCase";
