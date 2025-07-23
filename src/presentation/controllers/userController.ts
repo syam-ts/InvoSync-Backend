@@ -9,28 +9,15 @@ import { GetSingleClient } from "../../user-cases/user/GetSingleClientUseCase";
 import generateToken from "../../utils/jwt/generateToken";
 import { HttpStatusCode } from "../../helper/constants/statusCodes";
 
-
-
-         const userRepository = new  UserRepositoryDb();
-        const signupUserUsecase = new CreateUser(userRepository);
-        const loginUserUsecase = new LoginUser(userRepository);
-        const getUserProfileUsecase = new GetUserProfile(userRepository);
-        const updateUserUsecase = new UpdateUser(userRepository);
-        const getMyClientUsecase = new GetMyClients(userRepository);
-        const getSingleClientUsecase = new GetSingleClient(userRepository);
-    
+const userRepository = new UserRepositoryDb();
+const signupUserUsecase = new CreateUser(userRepository);
+const loginUserUsecase = new LoginUser(userRepository);
+const getUserProfileUsecase = new GetUserProfile(userRepository);
+const updateUserUsecase = new UpdateUser(userRepository);
+const getMyClientUsecase = new GetMyClients(userRepository);
+const getSingleClientUsecase = new GetSingleClient(userRepository);
 
 export class UserController {
-    // private userRepository: UserRepositoryDb;
-    // private signupUserUsecase: CreateUser;
-    // private loginUserUsecase: LoginUser;
-    // private getUserProfileUsecase: GetUserProfile;
-    // private updateUserUsecase: UpdateUser;
-    // private getMyClientUsecase: GetMyClients;
-    // private getSingleClientUsecase: GetSingleClient;
-
-   
-
     async signupUser(req: Request, res: Response): Promise<void> {
         try {
             const result = await signupUserUsecase.execute(req.body);
@@ -48,7 +35,7 @@ export class UserController {
 
     async loginUser(req: Request, res: Response): Promise<void> {
         try {
-            const user = await loginUserUsecase.execute    (req.body);
+            const user = await loginUserUsecase.execute(req.body);
             const { accessToken, refreshToken } = generateToken(user._id);
 
             res.cookie("refreshToken", refreshToken, {
@@ -89,10 +76,7 @@ export class UserController {
 
     async updateUser(req: any, res: Response): Promise<void> {
         try {
-            const user = await updateUserUsecase.execute(
-                req.body,
-                req.user.userId
-            );
+            const user = await updateUserUsecase.execute(req.body, req.user.userId);
 
             res
                 .status(HttpStatusCode.CREATED)
